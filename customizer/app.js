@@ -47,6 +47,9 @@ function setTab(tab) {
 
 function setTraceEnabled(enabled) {
   elements.traceButton.disabled = !enabled;
+  if (enabled) {
+    elements.traceButton.removeAttribute("disabled");
+  }
 }
 
 function setDownloadEnabled(enabled) {
@@ -78,6 +81,7 @@ function handleFile(file) {
     state.sourceDataUrl = reader.result;
     state.svgString = null;
     setStatus("Image loaded. Ready to trace.", `${Math.round(file.size / 1024)} KB`);
+    setTraceEnabled(true);
     updatePreviewState();
     setTab("original");
   };
@@ -211,3 +215,4 @@ applyPreset("logo");
 bindEvents();
 updatePreviewState();
 setTab("original");
+setTraceEnabled(true);
