@@ -59,7 +59,7 @@ function updatePreviewState() {
     elements.dropzone.style.opacity = 1;
     elements.originalImage.removeAttribute("src");
     elements.vectorOutput.innerHTML = "";
-    setTraceEnabled(false);
+    setTraceEnabled(true);
     setDownloadEnabled(false);
     setStatus("Waiting for upload.");
     return;
@@ -125,7 +125,10 @@ function ensureTracerAvailable() {
 }
 
 function traceToSvg() {
-  if (!state.sourceDataUrl) return;
+  if (!state.sourceDataUrl) {
+    setStatus("Upload an image to trace.");
+    return;
+  }
   if (!ensureTracerAvailable()) return;
 
   setStatus("Tracing in progress...", "This can take a few seconds.");
