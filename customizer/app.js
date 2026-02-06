@@ -121,19 +121,43 @@ function applyPreset(presetKey) {
 }
 
 function ensureTracerAvailable() {
-  if (typeof ImageTracer === "undefined") {
-    setStatus("Vector engine not loaded.", "Check your internet connection.");
-    return false;
-  }
-  return true;
+  return typeof ImageTracer !== "undefined";
 }
 
-function traceToSvg() {
+async function loadImageTracer() {
+  if (ensureTracerAvailable()) return true;
+  const sources = [
+    "https://unpkg.com/imagetracerjs@1.2.6/imagetracer_v1.2.6.js",
+    "https://cdn.jsdelivr.net/npm/imagetracerjs@1.2.6/imagetracer_v1.2.6.js",
+  ];
+
+  for (const src of sources) {
+    try {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+      if (ensureTracerAvailable()) return true;
+    } catch (_) {
+      // Try the next CDN.
+    }
+  }
+
+  setStatus("Vector engine not loaded.", "Please allow the CDN or try another network.");
+  return false;
+}
+
+async function traceToSvg() {
   if (!state.sourceDataUrl) {
     setStatus("Upload an image to trace.");
     return;
   }
-  if (!ensureTracerAvailable()) return;
+  const tracerReady = await loadImageTracer();
+  if (!tracerReady) return;
 
   setStatus("Tracing in progress...", "This can take a few seconds.");
   elements.traceButton.disabled = true;
