@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VectorCraft - JPG/PNG to Editable SVG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">VectorCraft Studio</p>
+          <h1>Convert JPG or PNG into editable vector art for CorelDRAW.</h1>
+          <p class="subhead">
+            A focused three-step flow: upload your artwork, dial in tracing settings, and
+            download a clean SVG ready for editing in CorelDRAW.
+          </p>
+          <div class="steps">
+            <div class="step-card">
+              <span>01</span>
+              <p>Upload a raster image.</p>
+            </div>
+            <div class="step-card">
+              <span>02</span>
+              <p>Refine the vector trace.</p>
+            </div>
+            <div class="step-card">
+              <span>03</span>
+              <p>Export SVG and edit.</p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <button id="resetAll" class="ghost">Reset Workspace</button>
+          <button id="downloadSvg" class="primary" disabled>Download SVG</button>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <div class="viewer">
+          <div class="viewer-tabs" role="tablist" aria-label="Preview selector">
+            <button class="tab active" data-tab="original" role="tab">Original</button>
+            <button class="tab" data-tab="vector" role="tab">Vector Preview</button>
+          </div>
+
+          <div class="preview-area" id="previewArea">
+            <div class="dropzone" id="dropzone">
+              <div>
+                <p class="drop-title">Drop JPG/PNG here</p>
+                <p class="drop-sub">or click to upload</p>
+                <input type="file" id="imageUpload" accept="image/png, image/jpeg" />
+              </div>
+            </div>
+            <div class="preview-panel" id="originalPanel">
+              <img id="originalImage" alt="Original upload" />
+            </div>
+            <div class="preview-panel" id="vectorPanel">
+              <div id="vectorOutput" class="vector-output"></div>
+            </div>
+          </div>
+
+          <div class="status-row">
+            <div>
+              <p class="status-title">Trace Status</p>
+              <p id="statusText" class="status-body">Waiting for upload.</p>
+            </div>
+            <div class="status-meta" id="statusMeta"></div>
+          </div>
+        </div>
+
+        <aside class="controls">
+          <section class="panel">
+            <h2>1. Upload</h2>
+            <div class="stack">
+              <label class="upload">
+                Choose Image
+                <input type="file" id="imageUploadAlt" accept="image/png, image/jpeg" />
+              </label>
+              <div class="info">
+                Best results with clear edges and high contrast artwork.
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>2. Trace Controls</h2>
+            <div class="stack">
+              <label>
+                Preset
+                <select id="presetSelect">
+                  <option value="logo">Logo / Icon (Crisp)</option>
+                  <option value="illustration">Illustration (Balanced)</option>
+                  <option value="detail">Photo Detail (Detailed)</option>
+                </select>
+              </label>
+              <label>
+                Color Mode
+                <select id="colorMode">
+                  <option value="color">Color</option>
+                  <option value="mono">Black & White</option>
+                </select>
+              </label>
+              <label>
+                Colors (when in Color mode)
+                <input type="range" id="colorCount" min="2" max="16" step="1" value="6" />
+              </label>
+              <label>
+                Detail Level
+                <input type="range" id="detailLevel" min="1" max="10" step="1" value="6" />
+              </label>
+              <label>
+                Smoothing
+                <input type="range" id="smoothing" min="0" max="10" step="1" value="4" />
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="transparentBg" checked />
+                Transparent Background
+              </label>
+              <button id="traceButton" class="primary" disabled>Generate Vector</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>3. Export</h2>
+            <div class="stack">
+              <button id="downloadSvgAlt" class="ghost" disabled>Download SVG</button>
+              <div class="info">
+                Open the SVG in CorelDRAW and edit shapes, colors, and nodes.
+              </div>
+            </div>
+          </section>
+
+          <section class="panel tips">
+            <h2>CorelDRAW Tips</h2>
+            <ul>
+              <li>Use PowerTRACE settings only if needed. Your SVG is already traced.</li>
+              <li>Ungroup after import to access individual paths.</li>
+              <li>Use "Simplify" for extra clean curves.</li>
+            </ul>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/imagetracerjs@1.2.6/imagetracer_v1.2.6.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
