@@ -45,8 +45,11 @@ function setTab(tab) {
   elements.vectorPanel.classList.toggle("active", tab === "vector");
 }
 
-function setButtonsEnabled(enabled) {
+function setTraceEnabled(enabled) {
   elements.traceButton.disabled = !enabled;
+}
+
+function setDownloadEnabled(enabled) {
   elements.downloadSvg.disabled = !enabled;
   elements.downloadSvgAlt.disabled = !enabled;
 }
@@ -56,14 +59,16 @@ function updatePreviewState() {
     elements.dropzone.style.opacity = 1;
     elements.originalImage.removeAttribute("src");
     elements.vectorOutput.innerHTML = "";
-    setButtonsEnabled(false);
+    setTraceEnabled(false);
+    setDownloadEnabled(false);
     setStatus("Waiting for upload.");
     return;
   }
 
   elements.dropzone.style.opacity = 0;
   elements.originalImage.src = state.sourceDataUrl;
-  setButtonsEnabled(Boolean(state.svgString));
+  setTraceEnabled(true);
+  setDownloadEnabled(Boolean(state.svgString));
 }
 
 function handleFile(file) {
@@ -138,8 +143,8 @@ function traceToSvg() {
     elements.vectorOutput.innerHTML = svgString;
     setTab("vector");
     setStatus("Vector ready.", `Nodes optimized: ${options.pathomit}`);
-    setButtonsEnabled(true);
-    elements.traceButton.disabled = false;
+    setDownloadEnabled(true);
+    setTraceEnabled(true);
   });
 }
 
